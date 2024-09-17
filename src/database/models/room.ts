@@ -1,4 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
+import { access } from "./access";
 
 @Entity()
 export class room {
@@ -13,4 +14,7 @@ export class room {
 
     @Column({ name: 'room_type' })
     room_type!: string;
+
+    @OneToMany(() => access, access => access.person)
+    accesses!: access[];
 }
