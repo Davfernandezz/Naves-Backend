@@ -39,7 +39,7 @@ export class Person1726560167856 implements MigrationInterface {
                         isUnique: true
                     },
                     {
-                        name: "DNI",
+                        name: "dni",
                         type: "varchar",
                         length: "15",
                         isNullable: false,
