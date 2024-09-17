@@ -32,6 +32,7 @@ export class Access1726560218248 implements MigrationInterface {
                     {
                         name: "exit_datetime",
                         type: "datetime",
+                        isNullable: true,
                     },
                     {
                         name: "state",
@@ -45,15 +46,13 @@ export class Access1726560218248 implements MigrationInterface {
                         columnNames: ["person_id"],
                         referencedTableName: "person",
                         referencedColumnNames: ["id"],
-                        onDelete: "CASCADE",
-                        onUpdate: "CASCADE",
+                        onDelete: "CASCADE"
                     },
                     {
                         columnNames: ["room_id"],
                         referencedTableName: "room",
                         referencedColumnNames: ["id"],
-                        onDelete: "CASCADE",
-                        onUpdate: "CASCADE",
+                        onDelete: "CASCADE"
                     },
                 ],
             }),
