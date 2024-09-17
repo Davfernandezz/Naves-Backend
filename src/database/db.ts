@@ -6,11 +6,11 @@ import { Room1726560205798 } from "./migrations/1726560205798-room";
 import { Access1726560218248 } from "./migrations/1726560218248-access";
 import { AccessHistory1726563877728 } from "./migrations/1726563877728-accessHistory";
 import { Administration1726564013782 } from "./migrations/1726564013782-administration";
-import { person } from "./models/person";
-import { room } from "./models/room";
-import { access } from "./models/access";
-import { accessHistory } from "./models/accessHistory";
-import { administration } from "./models/administration";
+import { person } from "../entities/person/person";
+import { room } from "../entities/room/room";
+import { access } from "../entities/access/access";
+import { accessHistory } from "../entities/accessHistory/accessHistory";
+import { administration } from "../entities/administration/administration";
 
 export const AppDataSource = new DataSource({
     type: "mysql",

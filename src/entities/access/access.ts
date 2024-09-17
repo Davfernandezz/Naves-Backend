@@ -1,9 +1,9 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
-import { person } from "./person"
-import { room } from "./room"
+import { person } from "../person/person"
+import { room } from "../room/room"
 
 @Entity()
-export class accessHistory {
+export class access {
     @PrimaryGeneratedColumn()
     id!: number
 
@@ -19,19 +19,14 @@ export class accessHistory {
     @Column({ name: 'exit_datetime'})
     exit_datetime!: Date
 
-    @Column({
-        type: "enum",
-        enum: ["approved", "denied", "pending"],
-        default: "pending",
-        name: 'state'
-    })
-    state!: 'approved' | 'denied' | 'pending';
+    @Column({ name: 'state'})
+    state!: string
 
-    @ManyToOne(() => person, person => person.record)
+    @ManyToOne(() => person)
     @JoinColumn({ name: 'person_id' })
     person!: person;
 
-    @ManyToOne(() => room, room => room.record)
+    @ManyToOne(() => room)
     @JoinColumn({ name: 'room_id' })
     room!: room;
 }

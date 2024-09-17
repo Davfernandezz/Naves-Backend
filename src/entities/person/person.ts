@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
-import { access } from "./access"
-import { accessHistory } from "./accessHistory"
+import { access } from "../access/access"
+import { accessHistory } from "../accessHistory/accessHistory"
+
 
 @Entity()
 export class person {
