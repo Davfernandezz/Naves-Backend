@@ -20,3 +20,7 @@ export class administration {
     @Column({ name: 'infrequent_persons' })
     infrequent_users!: string
 }
+
+
+
+    

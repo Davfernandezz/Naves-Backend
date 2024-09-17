@@ -1,6 +1,6 @@
 import { Entity } from "typeorm"
 
 @Entity()
-export class access-history {
+export class accessHistory {
 
 }
