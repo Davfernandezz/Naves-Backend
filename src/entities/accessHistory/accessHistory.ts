@@ -19,14 +19,6 @@ export class accessHistory {
     @Column({ name: 'exit_datetime'})
     exit_datetime!: Date
 
-    @Column({
-        type: "enum",
-        enum: ["approved", "denied", "pending"],
-        default: "pending",
-        name: 'state'
-    })
-    state!: 'approved' | 'denied' | 'pending';
-
     @ManyToOne(() => person, person => person.record)
     @JoinColumn({ name: 'person_id' })
     person!: person;
