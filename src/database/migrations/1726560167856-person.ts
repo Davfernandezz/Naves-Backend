@@ -55,7 +55,8 @@ export class Person1726560167856 implements MigrationInterface {
                     {
                         name: "phone",
                         type: "varchar",
-                        length: "15"
+                        length: "15",
+                        isNullable: true,
                     },
                     {
                         name: "role",
