@@ -19,8 +19,13 @@ export class access {
     @Column({ name: 'exit_datetime'})
     exit_datetime!: Date
 
-    @Column({ name: 'state'})
-    state!: string
+    @Column({
+        type: "enum",
+        enum: ["entry", "exit"],
+        default: "entry",
+        name: 'state'
+    })
+    state!: 'entry' | 'exit';
 
     @ManyToOne(() => person)
     @JoinColumn({ name: 'person_id' })
