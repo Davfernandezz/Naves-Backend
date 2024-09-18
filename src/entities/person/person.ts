@@ -14,6 +14,9 @@ export class person {
     @Column({ name: 'surnames' })
     last_name!: string
 
+    @Column({ name: 'password' })
+    password_hash!: string
+
     @Column({ name: 'startup' })
     startup!: string
 

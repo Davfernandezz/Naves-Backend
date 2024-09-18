@@ -27,6 +27,12 @@ export class Person1726560167856 implements MigrationInterface {
                         isNullable: false
                     },
                     {
+                        name: "password",
+                        type: "varchar",
+                        length: "255",
+                        isNullable: false
+                    },
+                    {
                         name: "startup",
                         type: "varchar",
                         length: "100",
@@ -56,7 +62,7 @@ export class Person1726560167856 implements MigrationInterface {
                         type: "enum",
                         enum: ["user", "admin"], 
                         default: "'user'",
-                    }
+                    },
                 ]
             }),
             true
