@@ -26,6 +26,14 @@ export class person {
     @Column({ name: 'phone' })
     phone!: string
 
+    @Column({
+        type: "enum",
+        enum: ["user", "admin"],
+        default: "user",
+        name: 'role'
+    })
+    role!: 'user' | 'admin';
+
     @OneToMany(() => access, access => access.person)
     accesses!: access[];
 
