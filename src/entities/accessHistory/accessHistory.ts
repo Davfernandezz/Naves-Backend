@@ -1,9 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 import { person } from "../person/person"
 import { room } from "../room/room"
 
 @Entity()
-export class accessHistory {
+export class accessHistory extends BaseEntity{
     @PrimaryGeneratedColumn()
     id!: number
 

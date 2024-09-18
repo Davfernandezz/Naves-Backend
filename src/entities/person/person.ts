@@ -1,21 +1,21 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
 import { access } from "../access/access"
 import { accessHistory } from "../accessHistory/accessHistory"
 
 
 @Entity()
-export class person {
+export class person extends BaseEntity{
     @PrimaryGeneratedColumn()
     id!: number
 
     @Column({ name: 'name' })
-    first_name!: string
+    name!: string
 
     @Column({ name: 'surnames' })
-    last_name!: string
+    surnames!: string
 
     @Column({ name: 'password' })
-    password_hash!: string
+    password!: string
 
     @Column({ name: 'startup' })
     startup!: string
