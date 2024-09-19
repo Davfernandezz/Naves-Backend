@@ -71,3 +71,71 @@ export const registerEntry = async (req: Request, res: Response) => {
         });
     }
 };
+
+
+export const registerExit = async (req: Request, res: Response) => {
+    try {
+        // 1. Recuperar la información
+        const { room_id } = req.body;
+        const person_id = req.tokenData.id;
+
+        // 2. Validar la información
+        if (!room_id) {
+            return res.status(400).json({
+                success: false,
+                message: "Room ID is required"
+            });
+        }
+        if (!person_id) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized"
+            });
+        }
+
+        // 3. Verificar si la sala existe
+        const roomExists = await room.findOne({ where: { id: room_id } });
+        if (!roomExists) {
+            return res.status(404).json({
+                success: false,
+                message: "Room not found"
+            });
+        }
+
+        // 4. Verificar si el usuario tiene una entrada activa en la sala especificada
+        const activeEntry = await access.findOne({
+            where: {
+                person_id: person_id,
+                room_id: room_id,   // Asegurarse de que sea en la misma sala
+                state: 'entry',
+                exit_datetime: IsNull()
+            }
+        });
+        if (!activeEntry) {
+            return res.status(400).json({
+                success: false,
+                message: "No active entry found for this room"
+            });
+        }
+
+        // 5. Registrar la salida
+        const currentDate = new Date();
+        activeEntry.exit_datetime = currentDate;
+        activeEntry.state = 'exit';
+        await activeEntry.save();
+
+        // 6. Responder
+        res.status(200).json({
+            success: true,
+            message: "Exit registered successfully",
+            data: activeEntry
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while registering exit",
+            error: error
+        });
+    }
+};
