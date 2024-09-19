@@ -106,7 +106,7 @@ export const registerExit = async (req: Request, res: Response) => {
         const activeEntry = await access.findOne({
             where: {
                 person_id: person_id,
-                room_id: room_id,   // Asegurarse de que sea en la misma sala
+                room_id: room_id,  
                 state: 'entry',
                 exit_datetime: IsNull()
             }
@@ -135,6 +135,69 @@ export const registerExit = async (req: Request, res: Response) => {
         res.status(500).json({
             success: false,
             message: "An error occurred while registering exit",
+            error: error
+        });
+    }
+};
+
+
+export const currentRoomOccupants = async (req: Request, res: Response) => {
+    try {
+        const room_id = +req.params.room_id;
+
+        if (isNaN(room_id)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid room ID"
+            });
+        }
+
+        // 1. Verificar si la sala existe
+        const roomExists = await room.findOne({ where: { id: room_id } });
+        if (!roomExists) {
+            return res.status(404).json({
+                success: false,
+                message: "Room not found"
+            });
+        }
+
+        // 2. Obtener la lista de accesos activos
+        const activeAccesses = await access.find({
+            where: {
+                room_id: room_id,
+                state: 'entry',
+                exit_datetime: IsNull()
+            },
+            relations: ['person']
+        });
+        if (activeAccesses.length === 0) {
+            return res.status(200).json({
+                success: true,
+                message: "No persons currently in the room",
+                data: []
+            });
+        }
+
+        // 3. Crear una lista de las personas actualmente en la sala
+        const occupants = activeAccesses.map(entry => ({
+            id: entry.person.id,
+            name: entry.person.name,
+            surnames: entry.person.surnames,
+            email: entry.person.email,
+            dni: entry.person.dni
+        }));
+
+        // 4. Responder con la lista de personas
+        return res.status(200).json({
+            success: true,
+            message: "Persons currently in the room",
+            data: occupants
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Error when searching for current occupants",
             error: error
         });
     }
