@@ -9,11 +9,7 @@ export interface TokenDecoded {
 declare global {
     namespace Express {
         export interface Request {
-            tokenData?: {
-                id: number;
-                role: 'user' | 'admin';
-                email: string;
-            };
+            tokenData: TokenDecoded;
         }
     }
 }
