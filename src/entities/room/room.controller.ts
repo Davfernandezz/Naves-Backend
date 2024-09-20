@@ -65,7 +65,7 @@ export const getCurrentRoomStatus = async (req: Request, res: Response) => {
         console.error(error);
         return res.status(500).json({
             success: false,
-            message: "An error occurred while fetching room status",
+            message: "Error getting room status",
             error: error
         });
     }

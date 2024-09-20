@@ -66,7 +66,7 @@ export const registerEntry = async (req: Request, res: Response) => {
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "An error occurred while registering entry",
+            message: "Error when registering the entry",
             error: error
         });
     }
@@ -134,7 +134,7 @@ export const registerExit = async (req: Request, res: Response) => {
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "An error occurred while registering exit",
+            message: "Error when registering the exit",
             error: error
         });
     }

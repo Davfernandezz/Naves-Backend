@@ -113,7 +113,7 @@ export const login = async (req: Request, res: Response) => {
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "An error occurred during login",
+            message: "Error occurred during login",
             error: error
         });
     }
