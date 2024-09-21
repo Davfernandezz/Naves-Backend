@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { access } from '../access/access'; 
 import { room } from '../room/room';
+import { accessHistory } from '../accessHistory/accessHistory';
 import { IsNull } from 'typeorm';
 
 export const registerEntry = async (req: Request, res: Response) => {
@@ -124,11 +125,22 @@ export const registerExit = async (req: Request, res: Response) => {
         activeEntry.state = 'exit';
         await activeEntry.save();
 
-        // 6. Responder
+        // 6. Guardar en el historial de accesos
+        const historyEntry = new accessHistory();
+        historyEntry.person_id = person_id;
+        historyEntry.room_id = room_id;
+        historyEntry.entry_datetime = activeEntry.entry_datetime;
+        historyEntry.exit_datetime = currentDate;
+        await historyEntry.save();
+
+        // 7. Responder
         res.status(200).json({
             success: true,
-            message: "Exit registered successfully",
-            data: activeEntry
+            message: "Exit registered successfully and added to history",
+            data: {
+                access: activeEntry,
+                historyEntry: historyEntry
+            }
         });
     } catch (error) {
         console.error(error);

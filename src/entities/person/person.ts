@@ -2,8 +2,7 @@ import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "t
 import { access } from "../access/access"
 import { accessHistory } from "../accessHistory/accessHistory"
 
-
-@Entity()
+@Entity('person')
 export class person extends BaseEntity{
     @PrimaryGeneratedColumn()
     id!: number
