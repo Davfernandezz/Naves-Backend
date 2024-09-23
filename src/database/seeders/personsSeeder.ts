@@ -30,7 +30,7 @@ export const personsSeeder = async () => {
 
         const user2 = new person();
         user2.name = "Alejandro";
-        user2.surnames = "uiz";
+        user2.surnames = "Ruiz";
         user2.email = "alejandro@alejandro.com";
         user2.password = bcrypt.hashSync("123456789", 10);
         user2.startup = "DataDrive";
