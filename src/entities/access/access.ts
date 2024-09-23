@@ -16,8 +16,8 @@ export class access extends BaseEntity{
     @Column({ name: 'entry_datetime'})
     entry_datetime!: Date
 
-    @Column({ name: 'exit_datetime'})
-    exit_datetime!: Date
+    @Column({ name: 'exit_datetime', type: 'datetime', nullable: true })
+    exit_datetime!: Date | null;
 
     @Column({
         type: "enum",
