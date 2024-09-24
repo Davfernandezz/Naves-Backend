@@ -2,7 +2,7 @@
 
 Welcome to my Naves Backend project, I hope you like it!
 <br><br>
-<img src="https://user-images.githubusercontent.com/74038190/213910845-af37a709-8995-40d6-be59-724526e3c3d7.gif" width="900">
+<img src="" width="900">
 </a>
 
 <details>
@@ -68,7 +68,7 @@ Used technology:
 ## Database Schema📋
 <img width="1423" src="">
 
-    - Person - AccessS: A person can have multiple accesses. One to one relationship many.
+    - Person - Access: A person can have multiple accesses. One to one relationship many.
 
     - Room - Access: A room can have multiple entrances. One to many relationship.
 
@@ -122,7 +122,7 @@ Used technology:
     ```
 </details>
 <details>
-<summary>Persons🧑🏻</summary>
+<summary>Persons</summary>
 
 
 
@@ -147,6 +147,11 @@ Used technology:
 </details>
 <details>
 <summary>Administration</summary>
+
+
+
+</details>
+<details>
 
 
 
