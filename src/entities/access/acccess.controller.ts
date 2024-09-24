@@ -24,7 +24,7 @@ export const registerEntry = async (req: Request, res: Response) => {
             });
         }
 
-        // 3. Verificar si la sala existe
+        // 3. Verificar si la sala existe y obtener su capacidad
         const roomExists = await room.findOne({ where: { id: room_id } });
         if (!roomExists) {
             return res.status(404).json({
@@ -48,7 +48,23 @@ export const registerEntry = async (req: Request, res: Response) => {
             });
         }
 
-        // 5. Crear nuevo registro de entrada
+        // 5. Verificar la capacidad actual de la sala
+        const currentOccupancy = await access.count({
+            where: {
+                room_id: room_id,
+                state: 'entry',
+                exit_datetime: IsNull()
+            }
+        });
+
+        if (currentOccupancy >= roomExists.capacity) {
+            return res.status(400).json({
+                success: false,
+                message: "Room capacity exceeded"
+            });
+        }
+
+        // 6. Crear nuevo registro de entrada
         const currentDate = new Date();
         const newEntry = new access();
         newEntry.person_id = person_id;
@@ -57,7 +73,7 @@ export const registerEntry = async (req: Request, res: Response) => {
         newEntry.state = 'entry';
         await newEntry.save();
 
-        // 6. Responder
+        // 7. Responder
         res.status(201).json({
             success: true,
             message: "Entry registered successfully",
@@ -71,7 +87,7 @@ export const registerEntry = async (req: Request, res: Response) => {
             error: error
         });
     }
-};
+}
 
 
 export const registerExit = async (req: Request, res: Response) => {
