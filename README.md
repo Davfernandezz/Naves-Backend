@@ -1,8 +1,8 @@
-# Naves Backend
+# Naves Backend☄️
 
 Welcome to my Naves Backend project, I hope you like it!
 <br><br>
-<img src="" width="900">
+<img src="https://user-images.githubusercontent.com/74038190/212749168-86d6c7ab-98da-409b-998f-c5b74721badd.gif" width="900">
 </a>
 
 <details>
@@ -24,11 +24,11 @@ Welcome to my Naves Backend project, I hope you like it!
 <br>
 
 ## Description📚
-
+This project consists of transforming the management of a coworking space into a fluid and automated experience. Through an innovative application, the aim is to optimize access control, facilitating the real-time registration of user entries and exits. In addition, the tool will allow you to manage work room reservations and offer accurate administrative reports for more efficient decision making. All this, in an intuitive and easy-to-use environment, designed to modernize the administration of these collaborative spaces.
 
 
 ## Objetive🎯
-
+This project aims to develop an application for access control and management of a coworking space. The application allows recording and monitoring entry and exit of people, manage work rooms and generate administrative reports.
 
 ## Deploy 🚀
 <div align="center">
@@ -151,7 +151,7 @@ Used technology:
 
 
 </details>
-<details>
+
 
 
 
