@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { access } from '../access/access';
 import { room } from '../room/room';
 import { accessHistory } from '../accessHistory/accessHistory';
-import { IsNull } from 'typeorm';
+import { IsNull, LessThanOrEqual } from 'typeorm';
 
 export const registerEntry = async (req: Request, res: Response) => {
     try {
@@ -119,24 +119,28 @@ export const registerExit = async (req: Request, res: Response) => {
             });
         }
 
+        const currentDate = new Date();
+
         // 4. Verificar si el usuario tiene una entrada activa en la sala especificada
+        // y que no sea una reserva futura
         const activeEntry = await access.findOne({
             where: {
                 person_id: person_id,
                 room_id: room_id,
                 state: 'active',
-                exit_datetime: IsNull()
+                exit_datetime: IsNull(),
+                entry_datetime: LessThanOrEqual(currentDate)
             }
         });
+
         if (!activeEntry) {
             return res.status(400).json({
                 success: false,
-                message: "No active entry found for this room"
+                message: "No active entry found for this room or it's a future reservation"
             });
         }
 
         // 5. Registrar la salida
-        const currentDate = new Date();
         activeEntry.exit_datetime = currentDate;
         activeEntry.state = 'inactive';
         await activeEntry.save();
