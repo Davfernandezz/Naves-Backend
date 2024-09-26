@@ -37,8 +37,8 @@ export class Access1726560218248 implements MigrationInterface {
                     {
                         name: "state",
                         type: "enum",
-                        enum: ["entry", "exit"],
-                        default: "'entry'",
+                        enum: ["active", "inactive"],
+                        default: "'active'",
                     },
                 ],
                 foreignKeys: [

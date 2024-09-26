@@ -10,7 +10,7 @@ export const accessSeeder = async () => {
         access1.room_id = 2;
         access1.entry_datetime = new Date();
         access1.exit_datetime = null;
-        access1.state = "entry";
+        access1.state = "active";
         await access1.save();
 
         const access2 = new access();
@@ -18,7 +18,7 @@ export const accessSeeder = async () => {
         access2.room_id = 1;
         access2.entry_datetime = new Date("2024-09-23T10:00:00");
         access2.exit_datetime = new Date("2024-09-23T12:30:00");
-        access2.state = "exit";
+        access2.state = "inactive";
         await access2.save();
 
         const access3 = new access();
@@ -26,7 +26,7 @@ export const accessSeeder = async () => {
         access3.room_id = 3;
         access3.entry_datetime = new Date();
         access3.exit_datetime = null;
-        access3.state = "entry";
+        access3.state = "active";
         await access3.save();
 
         const access4 = new access();
@@ -34,7 +34,7 @@ export const accessSeeder = async () => {
         access4.room_id = 5;
         access4.entry_datetime = new Date("2024-09-25T09:30:00");
         access4.exit_datetime = new Date("2024-09-25T11:45:00");
-        access4.state = "exit";
+        access4.state = "inactive";
         await access4.save();
 
         const access5 = new access();
@@ -42,7 +42,7 @@ export const accessSeeder = async () => {
         access5.room_id = 4;
         access5.entry_datetime = new Date();
         access5.exit_datetime = null;
-        access5.state = "entry";
+        access5.state = "active";
         await access5.save();
 
         const access6 = new access();
@@ -50,7 +50,7 @@ export const accessSeeder = async () => {
         access6.room_id = 2;
         access6.entry_datetime = new Date("2024-09-27T10:00:00");
         access6.exit_datetime = new Date("2024-09-27T12:00:00");
-        access6.state = "exit";
+        access6.state = "inactive";
         await access6.save();
 
         const access7 = new access();
@@ -58,7 +58,7 @@ export const accessSeeder = async () => {
         access7.room_id = 1;
         access7.entry_datetime = new Date();
         access7.exit_datetime = null;
-        access7.state = "entry";
+        access7.state = "active";
         await access7.save();
 
         const access8 = new access();
@@ -66,7 +66,7 @@ export const accessSeeder = async () => {
         access8.room_id = 3;
         access8.entry_datetime = new Date("2024-09-29T14:30:00");
         access8.exit_datetime = new Date("2024-09-29T16:00:00");
-        access8.state = "exit";
+        access8.state = "inactive";
         await access8.save();
 
         const access9 = new access();
@@ -74,7 +74,7 @@ export const accessSeeder = async () => {
         access9.room_id = 4;
         access9.entry_datetime = new Date();
         access9.exit_datetime = null;
-        access9.state = "entry";
+        access9.state = "active";
         await access9.save();
 
         const access10 = new access();
@@ -82,7 +82,7 @@ export const accessSeeder = async () => {
         access10.room_id = 5;
         access10.entry_datetime = new Date("2024-09-01T08:45:00");
         access10.exit_datetime = new Date("2024-09-01T10:30:00");
-        access10.state = "exit";
+        access10.state = "inactive";
         await access10.save();
 
         const access11 = new access();
@@ -90,7 +90,7 @@ export const accessSeeder = async () => {
         access11.room_id = 6;
         access11.entry_datetime = new Date();
         access11.exit_datetime = null;
-        access11.state = "entry";
+        access11.state = "active";
         await access11.save();
 
         const access12 = new access();
@@ -98,7 +98,7 @@ export const accessSeeder = async () => {
         access12.room_id = 1;
         access12.entry_datetime = new Date("2024-09-03T10:15:00");
         access12.exit_datetime = new Date("2024-09-03T12:00:00");
-        access12.state = "exit";
+        access12.state = "inactive";
         await access12.save();
 
         const access13 = new access();
@@ -106,7 +106,7 @@ export const accessSeeder = async () => {
         access13.room_id = 2;
         access13.entry_datetime = new Date();
         access13.exit_datetime = null;
-        access13.state = "entry";
+        access13.state = "active";
         await access13.save();
 
         const access14 = new access();
@@ -114,7 +114,7 @@ export const accessSeeder = async () => {
         access14.room_id = 3;
         access14.entry_datetime = new Date("2024-09-05T14:00:00");
         access14.exit_datetime = new Date("2024-09-05T16:30:00");
-        access14.state = "exit";
+        access14.state = "inactive";
         await access14.save();
 
         const access15 = new access();
@@ -122,7 +122,7 @@ export const accessSeeder = async () => {
         access15.room_id = 4;
         access15.entry_datetime = new Date();
         access15.exit_datetime = null;
-        access15.state = "entry";
+        access15.state = "active";
         await access15.save();
 
         console.log("===========================");

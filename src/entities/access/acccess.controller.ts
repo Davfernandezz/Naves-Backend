@@ -37,7 +37,7 @@ export const registerEntry = async (req: Request, res: Response) => {
         const activeEntry = await access.findOne({
             where: {
                 person_id: person_id,
-                state: 'entry',
+                state: 'active',
                 exit_datetime: IsNull()
             }
         });
@@ -52,7 +52,7 @@ export const registerEntry = async (req: Request, res: Response) => {
         const currentOccupancy = await access.count({
             where: {
                 room_id: room_id,
-                state: 'entry',
+                state: 'active',
                 exit_datetime: IsNull()
             }
         });
@@ -70,7 +70,7 @@ export const registerEntry = async (req: Request, res: Response) => {
         newEntry.person_id = person_id;
         newEntry.room_id = room_id;
         newEntry.entry_datetime = currentDate;
-        newEntry.state = 'entry';
+        newEntry.state = 'active';
         await newEntry.save();
 
         // 7. Responder
@@ -124,7 +124,7 @@ export const registerExit = async (req: Request, res: Response) => {
             where: {
                 person_id: person_id,
                 room_id: room_id,  
-                state: 'entry',
+                state: 'active',
                 exit_datetime: IsNull()
             }
         });
@@ -138,7 +138,7 @@ export const registerExit = async (req: Request, res: Response) => {
         // 5. Registrar la salida
         const currentDate = new Date();
         activeEntry.exit_datetime = currentDate;
-        activeEntry.state = 'exit';
+        activeEntry.state = 'inactive';
         await activeEntry.save();
 
         // 6. Guardar en el historial de accesos
@@ -193,7 +193,7 @@ export const currentRoomOccupants = async (req: Request, res: Response) => {
         const activeAccesses = await access.find({
             where: {
                 room_id: room_id,
-                state: 'entry',
+                state: 'active',
                 exit_datetime: IsNull()
             },
             relations: ['person']

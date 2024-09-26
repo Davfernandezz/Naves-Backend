@@ -32,7 +32,7 @@ export const getCurrentAccess = async (req: Request, res: Response) => {
         const currentAccess = await access.findOne({
             where: {
                 person_id: person_id,
-                state: 'entry',
+                state: 'active',
                 exit_datetime: IsNull()
             },
             relations: ['room']

@@ -30,7 +30,7 @@ export const getCurrentRoomStatus = async (req: Request, res: Response) => {
         const currentOccupants = await access.find({
             where: {
                 room_id: room_id,
-                state: 'entry',
+                state: 'active',
                 exit_datetime: IsNull()
             },
             relations: ['person']
