@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { access } from '../access/access'; 
 import { room } from '../room/room';
-import { IsNull } from 'typeorm';
+import { IsNull, LessThanOrEqual, MoreThan } from 'typeorm';
 
 export const getCurrentRoomStatus = async (req: Request, res: Response) => {
     try {
@@ -26,12 +26,15 @@ export const getCurrentRoomStatus = async (req: Request, res: Response) => {
             });
         }
 
+        const currentDate = new Date();
+
         // 2. Obtener la lista de personas actualmente en la sala
         const currentOccupants = await access.find({
             where: {
                 room_id: room_id,
                 state: 'active',
-                exit_datetime: IsNull()
+                exit_datetime: IsNull(),
+                entry_datetime: LessThanOrEqual(currentDate)
             },
             relations: ['person']
         });
@@ -45,17 +48,27 @@ export const getCurrentRoomStatus = async (req: Request, res: Response) => {
             dni: entry.person.dni
         }));
 
-        // 4. Preparar la respuesta
+        // 4. Obtener el número de reservas futuras
+        const futureReservations = await access.count({
+            where: {
+                room_id: room_id,
+                state: 'active',
+                entry_datetime: MoreThan(currentDate)
+            }
+        });
+
+        // 5. Preparar la respuesta
         const roomStatus = {
             id: roomInfo.id,
             room_name: roomInfo.room_name,
             capacity: roomInfo.capacity,
             room_type: roomInfo.room_type,
             current_occupancy: occupantsList.length,
+            future_reservations: futureReservations,
             occupants: occupantsList
         };
 
-        // 5. Enviar la respuesta
+        // 6. Enviar la respuesta
         return res.status(200).json({
             success: true,
             message: "Room status retrieved successfully",
@@ -69,4 +82,4 @@ export const getCurrentRoomStatus = async (req: Request, res: Response) => {
             error: error
         });
     }
-};
+}
