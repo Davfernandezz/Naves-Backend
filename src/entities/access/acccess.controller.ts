@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { access } from '../access/access'; 
+import { access } from '../access/access';
 import { room } from '../room/room';
 import { accessHistory } from '../accessHistory/accessHistory';
 import { IsNull } from 'typeorm';
@@ -123,7 +123,7 @@ export const registerExit = async (req: Request, res: Response) => {
         const activeEntry = await access.findOne({
             where: {
                 person_id: person_id,
-                room_id: room_id,  
+                room_id: room_id,
                 state: 'active',
                 exit_datetime: IsNull()
             }
@@ -167,6 +167,89 @@ export const registerExit = async (req: Request, res: Response) => {
         });
     }
 };
+
+
+export const registerReserve = async (req: Request, res: Response) => {
+    try {
+        // 1. Recuperar la información
+        const { room_id, entry_datetime} = req.body;
+        const person_id = req.tokenData.id;
+
+        // 2. Validar la información
+        if (!room_id || !entry_datetime) {
+            return res.status(400).json({
+                success: false,
+                message: "Room ID, entry datetime and exit datetime are required"
+            });
+        }
+        if (!person_id) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized"
+            });
+        }
+
+        // 3. Verificar si la sala existe
+        const roomExists = await room.findOne({ where: { id: room_id } });
+        if (!roomExists) {
+            return res.status(404).json({
+                success: false,
+                message: "Room not found"
+            });
+        }
+
+        // 4. Verificar si el usuario ya tiene una reserva activa o entrada activa
+        const userActiveAccess = await access.findOne({
+            where: {
+                person_id: person_id,
+                state: 'active'
+            }
+        });
+        if (userActiveAccess) {
+            return res.status(400).json({
+                success: false,
+                message: "User already has an active reservation or entry"
+            });
+        }
+
+        // 5. Verificar si la sala está disponible para el horario solicitado
+        const roomActiveAccesses = await access.count({
+            where: {
+                room_id: room_id,
+                state: 'active'
+            }
+        });
+
+        if (roomActiveAccesses >= roomExists.capacity) {
+            return res.status(400).json({
+                success: false,
+                message: "Room capacity exceeded"
+            });
+        }
+
+        // 6. Crear nueva reserva
+        const newReservation = new access();
+        newReservation.person_id = person_id;
+        newReservation.room_id = room_id;
+        newReservation.entry_datetime = new Date(entry_datetime);
+        newReservation.state = 'active';
+        await newReservation.save();
+
+        // 7. Responder
+        res.status(201).json({
+            success: true,
+            message: "Reservation registered successfully",
+            data: newReservation
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Error when registering the reservation",
+            error: error
+        });
+    }
+}
 
 
 export const currentRoomOccupants = async (req: Request, res: Response) => {
