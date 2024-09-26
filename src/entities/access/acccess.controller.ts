@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { access } from '../access/access';
 import { room } from '../room/room';
 import { accessHistory } from '../accessHistory/accessHistory';
-import { IsNull, LessThanOrEqual } from 'typeorm';
+import { IsNull, LessThanOrEqual, MoreThan } from 'typeorm';
 
 export const registerEntry = async (req: Request, res: Response) => {
     try {
@@ -250,6 +250,70 @@ export const registerReserve = async (req: Request, res: Response) => {
         res.status(500).json({
             success: false,
             message: "Error when registering the reservation",
+            error: error
+        });
+    }
+}
+
+
+export const cancelReservation = async (req: Request, res: Response) => {
+    try {
+        // 1. Recuperar la información
+        const reservationId = parseInt(req.params.id);
+        const person_id = req.tokenData.id;
+
+        // 2. Validar la información
+        if (isNaN(reservationId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Reservation ID"
+            });
+        }
+        if (!person_id) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized"
+            });
+        }
+
+        const currentDate = new Date();
+
+        // 3. Buscar la reserva
+        const reservation = await access.findOne({
+            where: {
+                id: reservationId,
+                entry_datetime: MoreThan(currentDate)
+            }
+        });
+
+        if (!reservation) {
+            return res.status(404).json({
+                success: false,
+                message: "Future reservation not found"
+            });
+        }
+
+        // 4. Verificar si el usuario es el propietario de la reserva
+        if (reservation.person_id !== person_id) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to cancel this reservation"
+            });
+        }
+
+        // 5. Eliminar la reserva
+        await access.remove(reservation);
+
+        // 6. Responder
+        res.status(200).json({
+            success: true,
+            message: "Reservation cancelled and removed successfully"
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Error when cancelling the reservation",
             error: error
         });
     }
