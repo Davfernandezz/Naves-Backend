@@ -8,9 +8,9 @@ export const accessSeeder = async () => {
         const access1 = new access();
         access1.person_id = 1;
         access1.room_id = 2;
-        access1.entry_datetime = new Date();
-        access1.exit_datetime = null;
-        access1.state = "active";
+        access1.entry_datetime = new Date("2024-09-23T10:00:00");
+        access1.exit_datetime = new Date("2024-09-23T12:30:00");
+        access1.state = "inactive";
         await access1.save();
 
         const access2 = new access();
