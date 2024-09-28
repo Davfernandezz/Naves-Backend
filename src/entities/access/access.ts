@@ -21,11 +21,11 @@ export class access extends BaseEntity{
 
     @Column({
         type: "enum",
-        enum: ["active", "inactive"],
+        enum: ["active", "inactive", "cancelled"],
         default: "active",
         name: 'state'
     })
-    state!: 'active' | 'inactive';
+    state!: 'active' | 'inactive'| 'cancelled';
 
     @ManyToOne(() => person)
     @JoinColumn({ name: 'person_id' })

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { access } from '../access/access';
 import { room } from '../room/room';
 import { accessHistory } from '../accessHistory/accessHistory';
-import { IsNull, LessThanOrEqual, MoreThan } from 'typeorm';
+import { IsNull, LessThanOrEqual, MoreThan, MoreThanOrEqual } from 'typeorm';
 
 export const registerEntry = async (req: Request, res: Response) => {
     try {
@@ -176,20 +176,31 @@ export const registerExit = async (req: Request, res: Response) => {
 export const registerReserve = async (req: Request, res: Response) => {
     try {
         // 1. Recuperar la información
-        const { room_id, entry_datetime} = req.body;
+        const { room_id, entry_datetime } = req.body;
         const person_id = req.tokenData.id;
 
         // 2. Validar la información
         if (!room_id || !entry_datetime) {
             return res.status(400).json({
                 success: false,
-                message: "Room ID, entry datetime and exit datetime are required"
+                message: "Room ID and entry datetime are required"
             });
         }
         if (!person_id) {
             return res.status(401).json({
                 success: false,
                 message: "Unauthorized"
+            });
+        }
+
+        const currentDate = new Date();
+        const reservationDate = new Date(entry_datetime);
+
+        // Verificar que la fecha de entrada no sea en el pasado
+        if (reservationDate < currentDate) {
+            return res.status(400).json({
+                success: false,
+                message: "Cannot make reservations in the past"
             });
         }
 
@@ -202,7 +213,7 @@ export const registerReserve = async (req: Request, res: Response) => {
             });
         }
 
-        // 4. Verificar si el usuario ya tiene una reserva activa o entrada activa
+        // 4. Verificar si el usuario ya tiene una reserva activa, entrada activa o está dentro de una sala
         const userActiveAccess = await access.findOne({
             where: {
                 person_id: person_id,
@@ -215,19 +226,20 @@ export const registerReserve = async (req: Request, res: Response) => {
                 message: "User already has an active reservation or entry"
             });
         }
-
         // 5. Verificar si la sala está disponible para el horario solicitado
         const roomActiveAccesses = await access.count({
             where: {
                 room_id: room_id,
-                state: 'active'
+                state: 'active',
+                entry_datetime: MoreThanOrEqual(reservationDate),
+                exit_datetime: IsNull()
             }
         });
 
         if (roomActiveAccesses >= roomExists.capacity) {
             return res.status(400).json({
                 success: false,
-                message: "Room capacity exceeded"
+                message: "Room capacity exceeded for the requested time"
             });
         }
 
@@ -235,7 +247,7 @@ export const registerReserve = async (req: Request, res: Response) => {
         const newReservation = new access();
         newReservation.person_id = person_id;
         newReservation.room_id = room_id;
-        newReservation.entry_datetime = new Date(entry_datetime);
+        newReservation.entry_datetime = reservationDate;
         newReservation.state = 'active';
         await newReservation.save();
 
@@ -282,14 +294,15 @@ export const cancelReservation = async (req: Request, res: Response) => {
         const reservation = await access.findOne({
             where: {
                 id: reservationId,
-                entry_datetime: MoreThan(currentDate)
+                entry_datetime: MoreThan(currentDate),
+                state: 'active'  
             }
         });
 
         if (!reservation) {
             return res.status(404).json({
                 success: false,
-                message: "Future reservation not found"
+                message: "Future active reservation not found"
             });
         }
 
@@ -301,13 +314,14 @@ export const cancelReservation = async (req: Request, res: Response) => {
             });
         }
 
-        // 5. Eliminar la reserva
-        await access.remove(reservation);
+        // 5. Actualizar el estado de la reserva a 'cancelled'
+        reservation.state = 'cancelled';
+        await reservation.save();
 
         // 6. Responder
         res.status(200).json({
             success: true,
-            message: "Reservation cancelled and removed successfully"
+            message: "Reservation cancelled successfully"
         });
     } catch (error) {
         console.error(error);

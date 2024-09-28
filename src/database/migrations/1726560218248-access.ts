@@ -37,7 +37,7 @@ export class Access1726560218248 implements MigrationInterface {
                     {
                         name: "state",
                         type: "enum",
-                        enum: ["active", "inactive"],
+                        enum: ["active", "inactive", "cancelled"],
                         default: "'active'",
                     },
                 ],
