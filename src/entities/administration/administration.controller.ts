@@ -151,8 +151,7 @@ export const getRoomUsageStats = async (req: Request, res: Response) => {
                 completed_accesses: completedAccesses,
                 cancelled_accesses: cancelledAccesses,
                 total_hours_used: parseFloat(totalHours.toFixed(2)),
-                average_duration: totalAccesses > 0 ? parseFloat((totalHours / totalAccesses).toFixed(2)) : 0,
-                utilization_rate: parseFloat(((totalHours / (24 * daysInPeriod)) * 100).toFixed(2))
+                average_duration: totalAccesses > 0 ? parseFloat((totalHours / totalAccesses).toFixed(2)) : 0
             };
         });
 
@@ -182,11 +181,10 @@ export const getRoomUsageStats = async (req: Request, res: Response) => {
         res.status(500).json({
             success: false,
             message: "Error retrieving room usage statistics",
-            error: error
+            error: error instanceof Error ? error.message : "Unknown error"
         }); 
     }
 };
-
 
 export const getDateReport = async (req: Request, res: Response) => {
     try {
@@ -301,7 +299,7 @@ export const getDateReport = async (req: Request, res: Response) => {
         res.status(500).json({
             success: false,
             message: "Error generating custom report",
-            error: error instanceof Error ? error.message : "Unknown error"
+            error: error
         });
     }
 };
