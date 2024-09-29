@@ -106,7 +106,6 @@ export const generateDailyReport = async (req: Request, res: Response) => {
     }
 };
 
-
 export const getRoomUsageStats = async (req: Request, res: Response) => {
     try {
         // 1. Calcular el primer día del mes actual y el día actual
@@ -185,5 +184,124 @@ export const getRoomUsageStats = async (req: Request, res: Response) => {
             message: "Error retrieving room usage statistics",
             error: error
         }); 
+    }
+};
+
+
+export const getDateReport = async (req: Request, res: Response) => {
+    try {
+        const { start_date, end_date } = req.body;
+
+        if (!start_date || !end_date) {
+            return res.status(400).json({
+                success: false,
+                message: "Both start_date and end_date are required in the request body"
+            });
+        }
+
+        const startDate = new Date(start_date);
+        const endDate = new Date(end_date);
+        endDate.setHours(23, 59, 59, 999);
+
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid date format. Use YYYY-MM-DD"
+            });
+        }
+
+        // 1. Obtener los accesos del período con detalles
+        const accesses = await access.find({
+            where: {
+                entry_datetime: Between(startDate, endDate),
+                exit_datetime: Not(IsNull()),
+            },
+            relations: ['person', 'room']
+        });
+
+        const totalAccesses = accesses.length;
+
+        // 2. Obtener las ausencias (reservas canceladas) con detalles
+        const absences = await access.find({
+            where: {
+                entry_datetime: Between(startDate, endDate),
+                state: 'cancelled'
+            },
+            relations: ['person', 'room']
+        });
+
+        const totalAbsences = absences.length;
+
+        // 3. Obtener todos los usuarios con actividad en el período
+        const allActiveUsers = await access.createQueryBuilder("access")
+            .select("access.person_id", "userId")
+            .addSelect("COUNT(*)", "accessCount")
+            .addSelect("person.name", "name")
+            .addSelect("person.surnames", "surnames")
+            .innerJoin("access.person", "person")
+            .where("access.entry_datetime BETWEEN :start AND :end", { start: startDate, end: endDate })
+            .groupBy("access.person_id")
+            .addGroupBy("person.name")
+            .addGroupBy("person.surnames")
+            .orderBy("accessCount", "DESC")
+            .getRawMany();
+
+        // 4. Separar usuarios frecuentes e infrecuentes
+        const averageAccesses = allActiveUsers.reduce((sum, user) => sum + parseInt(user.accessCount), 0) / allActiveUsers.length;
+        const frequentUsers = allActiveUsers.filter(user => parseInt(user.accessCount) > averageAccesses);
+        const infrequentUsers = allActiveUsers.filter(user => parseInt(user.accessCount) <= averageAccesses);
+
+        // 5. Preparar datos detallados para la respuesta
+        const detailedReport = {
+            report_period: {
+                start_date: startDate,
+                end_date: endDate
+            },
+            total_accesses: totalAccesses,
+            total_absences: totalAbsences,
+            accesses: accesses.map(a => ({
+                person: `${a.person.name} ${a.person.surnames}`,
+                room: a.room.room_name,
+                entry_time: a.entry_datetime,
+                exit_time: a.exit_datetime
+            })),
+            absences: absences.map(a => ({
+                person: `${a.person.name} ${a.person.surnames}`,
+                room: a.room.room_name,
+                scheduled_entry_time: a.entry_datetime,
+            })),
+            frequent_users: frequentUsers.map(u => ({
+                name: `${u.name} ${u.surnames}`,
+                accessCount: parseInt(u.accessCount)
+            })),
+            infrequent_users: infrequentUsers.map(u => ({
+                name: `${u.name} ${u.surnames}`,
+                accessCount: parseInt(u.accessCount)
+            }))
+        };
+
+        // 6. Guardar el informe en la base de datos
+        const newReport = new administration();
+        newReport.report_date = startDate;
+        newReport.total_accesses = totalAccesses;
+        newReport.total_absences = totalAbsences;
+        newReport.frequent_users = JSON.stringify(detailedReport.frequent_users);
+        newReport.infrequent_users = JSON.stringify(detailedReport.infrequent_users);
+        await newReport.save();
+
+        // 7. Responder
+        res.status(201).json({
+            success: true,
+            message: "Custom report generated and saved successfully",
+            data: detailedReport
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Error generating custom report",
+            error: error instanceof Error ? error.message : "Unknown error"
+        });
     }
 };

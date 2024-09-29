@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { auth } from "../../middlewares/auth";
-import { generateDailyReport, getRoomUsageStats } from "./administration.controller";
+import { generateDailyReport, getDateReport, getRoomUsageStats } from "./administration.controller";
 
 
 const router = Router()
 
 router.post('/daily-report',auth, generateDailyReport)
-router.get('/reports',auth, )
 router.get('/room-usage',auth, getRoomUsageStats)
+router.get('/reports',auth, getDateReport)
 
 export { router }
