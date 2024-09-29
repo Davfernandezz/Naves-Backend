@@ -9,7 +9,7 @@ import { room } from '../room/room';
 
 export const generateDailyReport = async (req: Request, res: Response) => {
     try {
-        const today = new Date();
+        const today = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Madrid"}));
         today.setHours(0, 0, 0, 0);
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
@@ -101,7 +101,7 @@ export const generateDailyReport = async (req: Request, res: Response) => {
         res.status(500).json({
             success: false,
             message: "Error generating daily report",
-            error: error
+            error: error 
         });
     }
 };
@@ -130,37 +130,41 @@ export const getRoomUsageStats = async (req: Request, res: Response) => {
         // 5. Calcular estadísticas para cada sala
         const roomStats = rooms.map(room => {
             const roomAccesses = accesses.filter(a => a.room.id === room.id);
-            const totalAccesses = roomAccesses.length;
-            const completedAccesses = roomAccesses.filter(a => a.exit_datetime !== null).length;
-            const cancelledAccesses = roomAccesses.filter(a => a.state === 'cancelled').length;
+            const completedAccesses = roomAccesses.filter(a => a.exit_datetime !== null);
+            const cancelledAccesses = roomAccesses.filter(a => a.state === 'cancelled');
+            const totalAccesses = roomAccesses.length - cancelledAccesses.length; // Excluye los cancelados
 
-            // 6. Calcular horas totales de uso
-            const totalHours = roomAccesses.reduce((total, a) => {
+            // Calcular horas totales de uso y duración promedio solo para accesos completados
+            let totalHours = 0;
+            let totalDuration = 0;
+
+            completedAccesses.forEach(a => {
                 if (a.exit_datetime) {
                     const duration = (a.exit_datetime.getTime() - a.entry_datetime.getTime()) / (1000 * 60 * 60);
-                    return total + duration;
+                    totalHours += duration;
+                    totalDuration += duration;
                 }
-                return total;
-            }, 0);
+            });
 
-            // 7. Retornar estadísticas de la sala
+            const averageDuration = completedAccesses.length > 0 ? totalDuration / completedAccesses.length : 0;
+
             return {
                 room_id: room.id,
                 room_name: room.room_name,
                 total_accesses: totalAccesses,
-                completed_accesses: completedAccesses,
-                cancelled_accesses: cancelledAccesses,
+                completed_accesses: completedAccesses.length,
+                cancelled_accesses: cancelledAccesses.length,
                 total_hours_used: parseFloat(totalHours.toFixed(2)),
-                average_duration: totalAccesses > 0 ? parseFloat((totalHours / totalAccesses).toFixed(2)) : 0
+                average_duration: parseFloat(averageDuration.toFixed(2))
             };
         });
 
-        // 8. Calcular estadísticas globales
+        // 6. Calcular estadísticas globales
         const totalAccesses = roomStats.reduce((sum, stat) => sum + stat.total_accesses, 0);
         const totalCancellations = roomStats.reduce((sum, stat) => sum + stat.cancelled_accesses, 0);
         const totalHoursUsed = roomStats.reduce((sum, stat) => sum + stat.total_hours_used, 0);
 
-        // 9. Preparar la respuesta
+        // 7. Preparar la respuesta
         const response = {
             period: `${startDate.toLocaleDateString()} to ${endDate.toLocaleDateString()}`,
             days_in_period: daysInPeriod,
@@ -170,7 +174,7 @@ export const getRoomUsageStats = async (req: Request, res: Response) => {
             room_stats: roomStats
         };
 
-        // 10. Enviar la respuesta
+        // 8. Enviar la respuesta
         res.status(200).json({
             success: true,
             message: "Room usage statistics from the beginning of the month to today retrieved successfully",
