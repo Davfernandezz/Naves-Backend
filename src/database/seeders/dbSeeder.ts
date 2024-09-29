@@ -1,4 +1,3 @@
-import { accessHistorySeeder } from "./accessHistorySeeder";
 import { accessSeeder } from "./accessSeeder";
 import { administrationSeeder } from "./administrationSeeder";
 import { personsSeeder } from "./personsSeeder";
@@ -9,6 +8,5 @@ import { roomsSeeder } from "./roomsSeeder";
     await personsSeeder();
     await roomsSeeder();
     await accessSeeder();
-    await accessHistorySeeder();
     await administrationSeeder();
 })();

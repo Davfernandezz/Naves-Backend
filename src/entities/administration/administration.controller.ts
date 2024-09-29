@@ -181,8 +181,8 @@ export const getRoomUsageStats = async (req: Request, res: Response) => {
         res.status(500).json({
             success: false,
             message: "Error retrieving room usage statistics",
-            error: error instanceof Error ? error.message : "Unknown error"
-        }); 
+            error: error
+        });
     }
 };
 
