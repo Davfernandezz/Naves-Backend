@@ -354,15 +354,19 @@ export const currentRoomOccupants = async (req: Request, res: Response) => {
             });
         }
 
-        // 2. Obtener la lista de accesos activos
+        const now = new Date();
+
+        // 2. Obtener la lista de accesos activos actuales
         const activeAccesses = await access.find({
             where: {
                 room_id: room_id,
                 state: 'active',
+                entry_datetime: LessThanOrEqual(now),
                 exit_datetime: IsNull()
             },
             relations: ['person']
         });
+
         if (activeAccesses.length === 0) {
             return res.status(200).json({
                 success: true,
