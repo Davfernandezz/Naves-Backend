@@ -132,7 +132,7 @@ export const getRoomUsageStats = async (req: Request, res: Response) => {
             const roomAccesses = accesses.filter(a => a.room.id === room.id);
             const completedAccesses = roomAccesses.filter(a => a.exit_datetime !== null);
             const cancelledAccesses = roomAccesses.filter(a => a.state === 'cancelled');
-            const totalAccesses = roomAccesses.length - cancelledAccesses.length; // Excluye los cancelados
+            const totalAccesses = roomAccesses.length - cancelledAccesses.length;
 
             // Calcular horas totales de uso y duración promedio solo para accesos completados
             let totalHours = 0;

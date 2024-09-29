@@ -2,7 +2,7 @@
 
 Welcome to my Naves Backend project, I hope you like it!☄️
 <br><br>
-<img src="https://github.com/Anmol-Baranwal/Cool-GIFs-For-GitHub/assets/74038190/0c7eb6ed-663b-4ce4-bfbd-18239a38ba1b" width="700">
+<img src="https://github.com/Anmol-Baranwal/Cool-GIFs-For-GitHub/assets/74038190/0c7eb6ed-663b-4ce4-bfbd-18239a38ba1b" width="800">
 </a>
 
 <details>
@@ -25,12 +25,12 @@ Welcome to my Naves Backend project, I hope you like it!☄️
 
 ## Description📚
 This project consists of transforming the management of a coworking space into a fluid and automated experience. Through an innovative application, the aim is to optimize access control, facilitating the real-time registration of user entries and exits. In addition, the tool will allow you to manage work room reservations and offer accurate administrative reports for more efficient decision making. All this, in an intuitive and easy-to-use environment, designed to modernize the administration of these collaborative spaces.
-<p align="center">
-<img width="215" alt="Captura de pantalla 2023-01-30 a las 20 20 38" src="img/Descripcion.png">
-</p>
 
 ## Objetive🎯
 This project aims to develop an application for access control and management of a coworking space. The application allows recording and monitoring entry and exit of people, manage work rooms and generate administrative reports.
+<p align="center">
+<img width="215" alt="Captura de pantalla 2023-01-30 a las 20 20 38" src="img/Descripcion.png">
+</p>
 
 ## Deploy 🚀
 <div align="center">
@@ -68,7 +68,7 @@ Used technology:
 
 
 ## Database Schema📋
-<img width="1423" src="">
+<img width="1423" src="./img/diagrama.JPG">
 
     - Person - Access: A person can have multiple accesses. One to one relationship many.
 
