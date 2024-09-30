@@ -1,0 +1,326 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Naves",
+    "collectionId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+    "dateExported": "2024-09-30T13:35:33.059Z",
+    "version": "1.2",
+    "folders": [
+        {
+            "_id": "9b09dc7a-1397-4fd8-9e53-e6beb0e19e15",
+            "name": "Auth",
+            "containerId": "",
+            "created": "2024-09-18T10:01:14.243Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "54510628-38f7-4452-bdde-881c9c2bf138",
+            "name": "Access",
+            "containerId": "",
+            "created": "2024-09-19T11:36:34.393Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "8aa38b51-8616-4d70-8486-8d29dc9bbaf0",
+            "name": "Rooms",
+            "containerId": "",
+            "created": "2024-09-20T13:42:34.425Z",
+            "sortNum": 30000
+        },
+        {
+            "_id": "54e20555-5001-44cf-8deb-88685c1915ad",
+            "name": "Persons",
+            "containerId": "",
+            "created": "2024-09-20T14:22:29.050Z",
+            "sortNum": 40000
+        },
+        {
+            "_id": "8333db48-2368-46e8-afce-62f9134cb156",
+            "name": "Access history",
+            "containerId": "",
+            "created": "2024-09-21T15:14:40.404Z",
+            "sortNum": 50000
+        },
+        {
+            "_id": "103d9ee1-5818-4bac-b495-5ed7c6e6ad3c",
+            "name": "Administration",
+            "containerId": "",
+            "created": "2024-09-28T16:40:07.057Z",
+            "sortNum": 60000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "9de8f6f1-e6d8-4ee0-b73f-875e693a8f15",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "9b09dc7a-1397-4fd8-9e53-e6beb0e19e15",
+            "name": "Register",
+            "url": "http://localhost:4000/api/auth/register",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-09-18T10:01:22.031Z",
+            "modified": "2024-09-26T08:53:11.579Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"manolo@manolo.com\",\n  \"password\": \"123456789\",\n  \"name\": \"manolo\",\n  \"surnames\": \"fernandez\",\n  \"dni\": \"123456789B\",\n  \"phone\": \"53227372\",\n  \"startup\": \"Juncos\"\n  \n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "d8fe4580-9547-45d7-bb54-94e334bac03f",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "9b09dc7a-1397-4fd8-9e53-e6beb0e19e15",
+            "name": "Login",
+            "url": "http://localhost:4000/api/auth/login",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-09-18T10:38:03.755Z",
+            "modified": "2024-09-29T14:08:59.971Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"david@david.com\",\n  \"password\": \"123456789\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "60c94cbc-ff7b-481a-bb4f-f62f13d19eef",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "54510628-38f7-4452-bdde-881c9c2bf138",
+            "name": "Entry",
+            "url": "http://localhost:4000/api/accesses/entry",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2024-09-19T11:36:55.650Z",
+            "modified": "2024-09-29T15:38:20.641Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"room_id\": \"5\"\n}\n",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkYXZpZEBkYXZpZC5jb20iLCJuYW1lIjoiRGF2aWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjc2MjQxNTcsImV4cCI6MTcyNzYzMTM1N30.lxUWdonPwvgxHNYL786hsoDaw6V7Y033Z0yF2GzejeY"
+            }
+        },
+        {
+            "_id": "521078fc-2351-4543-88d9-10ac3779add2",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "54510628-38f7-4452-bdde-881c9c2bf138",
+            "name": "Exit",
+            "url": "http://localhost:4000/api/accesses/exit",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2024-09-19T12:50:19.546Z",
+            "modified": "2024-09-29T15:40:34.521Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"room_id\": \"1\"\n}\n",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkYXZpZEBkYXZpZC5jb20iLCJuYW1lIjoiRGF2aWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjc2MjQxNTcsImV4cCI6MTcyNzYzMTM1N30.lxUWdonPwvgxHNYL786hsoDaw6V7Y033Z0yF2GzejeY"
+            }
+        },
+        {
+            "_id": "342854bc-7110-4679-845d-953f3a9c16d8",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "54510628-38f7-4452-bdde-881c9c2bf138",
+            "name": "Get current occupants",
+            "url": "http://localhost:4000/api/accesses/current/room/1",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2024-09-19T13:15:46.309Z",
+            "modified": "2024-09-29T15:55:00.354Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkYXZpZEBkYXZpZC5jb20iLCJuYW1lIjoiRGF2aWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjc2MjQxNTcsImV4cCI6MTcyNzYzMTM1N30.lxUWdonPwvgxHNYL786hsoDaw6V7Y033Z0yF2GzejeY"
+            }
+        },
+        {
+            "_id": "6ae7f858-e9b1-44d9-8fe4-52a0524257db",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "8aa38b51-8616-4d70-8486-8d29dc9bbaf0",
+            "name": "Get current status",
+            "url": "http://localhost:4000/api/rooms/2/current-status",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2024-09-20T13:42:59.603Z",
+            "modified": "2024-09-29T16:13:39.361Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkYXZpZEBkYXZpZC5jb20iLCJuYW1lIjoiRGF2aWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjc2MjYxNzEsImV4cCI6MTcyNzYzMzM3MX0.LaiUMXWYZ0lqgdTUGRtfeBRkhG1uCFU2kD5OW3j-ATg"
+            }
+        },
+        {
+            "_id": "10af8bb9-0a1f-4d63-831b-5b68b84b1b65",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "54e20555-5001-44cf-8deb-88685c1915ad",
+            "name": "Get current access",
+            "url": "http://localhost:4000/api/persons/1/current-access",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2024-09-20T14:22:55.742Z",
+            "modified": "2024-09-29T14:01:20.250Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJlbW1hQGVtbWEuY29tIiwibmFtZSI6IkVtbWEiLCJyb2xlIjoidXNlciIsImlhdCI6MTcyNzYxODQzNCwiZXhwIjoxNzI3NjI1NjM0fQ.FdKpWbH4mqYpZ32DdVGKMvjq4U_3azJJb84yyoT2HLE"
+            }
+        },
+        {
+            "_id": "92d62bad-aaf0-488f-bbee-668ba32ee50c",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "54e20555-5001-44cf-8deb-88685c1915ad",
+            "name": "Get access history",
+            "url": "http://localhost:4000/api/persons/1/access-history",
+            "method": "GET",
+            "sortNum": 90000,
+            "created": "2024-09-20T14:36:04.861Z",
+            "modified": "2024-09-28T17:41:46.808Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkYXZpZEBkYXZpZC5jb20iLCJuYW1lIjoiRGF2aWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjc1NDUyOTAsImV4cCI6MTcyNzU1MjQ5MH0.nnI8CQP45_LlUwo-6eMaKyQzLoVVvgubyaNsn_DVpyA"
+            }
+        },
+        {
+            "_id": "0446bdd2-94d0-4ae9-8866-2de3e14e3e0d",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "8333db48-2368-46e8-afce-62f9134cb156",
+            "name": "Get access history",
+            "url": "http://localhost:4000/api/access_histories",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2024-09-21T15:15:05.426Z",
+            "modified": "2024-09-29T16:10:04.402Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"start_date\": \"2024-09-01\",\n  \"end_date\": \"2024-09-30\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkYXZpZEBkYXZpZC5jb20iLCJuYW1lIjoiRGF2aWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjc2MjYxNzEsImV4cCI6MTcyNzYzMzM3MX0.LaiUMXWYZ0lqgdTUGRtfeBRkhG1uCFU2kD5OW3j-ATg"
+            }
+        },
+        {
+            "_id": "a3e7cc27-80be-4802-9016-ddb51a2787d3",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "8333db48-2368-46e8-afce-62f9134cb156",
+            "name": "Get room access history",
+            "url": "http://localhost:4000/api/access_histories/room/2",
+            "method": "GET",
+            "sortNum": 120000,
+            "created": "2024-09-22T14:25:11.116Z",
+            "modified": "2024-09-29T16:10:13.723Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"start_date\": \"2024-09-01\",\n  \"end_date\": \"2024-09-30\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkYXZpZEBkYXZpZC5jb20iLCJuYW1lIjoiRGF2aWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjc2MjYxNzEsImV4cCI6MTcyNzYzMzM3MX0.LaiUMXWYZ0lqgdTUGRtfeBRkhG1uCFU2kD5OW3j-ATg"
+            }
+        },
+        {
+            "_id": "adde6eff-ccd3-48ae-bfdf-8c275878eb06",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "54510628-38f7-4452-bdde-881c9c2bf138",
+            "name": "Reserve",
+            "url": "http://localhost:4000/api/accesses/reserve",
+            "method": "POST",
+            "sortNum": 130000,
+            "created": "2024-09-26T09:35:49.278Z",
+            "modified": "2024-09-29T15:40:24.669Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"room_id\": \"1\",\n  \"entry_datetime\": \"2024-09-29 23:00:00\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkYXZpZEBkYXZpZC5jb20iLCJuYW1lIjoiRGF2aWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjc2MjQxNTcsImV4cCI6MTcyNzYzMTM1N30.lxUWdonPwvgxHNYL786hsoDaw6V7Y033Z0yF2GzejeY"
+            }
+        },
+        {
+            "_id": "72d8cf09-de96-4057-8150-15af7730e812",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "54510628-38f7-4452-bdde-881c9c2bf138",
+            "name": "Cancel Reserve",
+            "url": "http://localhost:4000/api/accesses/reservations/60",
+            "method": "PUT",
+            "sortNum": 140000,
+            "created": "2024-09-26T11:08:46.140Z",
+            "modified": "2024-09-29T15:40:50.378Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkYXZpZEBkYXZpZC5jb20iLCJuYW1lIjoiRGF2aWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjc2MjQxNTcsImV4cCI6MTcyNzYzMTM1N30.lxUWdonPwvgxHNYL786hsoDaw6V7Y033Z0yF2GzejeY"
+            }
+        },
+        {
+            "_id": "e98e6a04-4827-48af-9fb6-d9ee8d6f0aec",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "103d9ee1-5818-4bac-b495-5ed7c6e6ad3c",
+            "name": "Post daily report",
+            "url": "http://localhost:4000/api/administration/daily-report",
+            "method": "POST",
+            "sortNum": 160000,
+            "created": "2024-09-28T16:40:42.176Z",
+            "modified": "2024-09-29T15:12:57.069Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkYXZpZEBkYXZpZC5jb20iLCJuYW1lIjoiRGF2aWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjc2MjI3NjAsImV4cCI6MTcyNzYyOTk2MH0.qTGvQL4A2J_vHB0HJDFRvBLKVKc5TaVavyMyggYIyiI"
+            }
+        },
+        {
+            "_id": "ddd875f1-a86c-4e3b-8c44-a7e89b253002",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "103d9ee1-5818-4bac-b495-5ed7c6e6ad3c",
+            "name": "Get room usage",
+            "url": "http://localhost:4000/api/administration/room-usage",
+            "method": "GET",
+            "sortNum": 170000,
+            "created": "2024-09-28T21:07:04.021Z",
+            "modified": "2024-09-29T16:09:38.813Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkYXZpZEBkYXZpZC5jb20iLCJuYW1lIjoiRGF2aWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjc2MjYxNzEsImV4cCI6MTcyNzYzMzM3MX0.LaiUMXWYZ0lqgdTUGRtfeBRkhG1uCFU2kD5OW3j-ATg"
+            }
+        },
+        {
+            "_id": "57c465b0-7a7b-4371-9ee9-54ccd2f4ccbc",
+            "colId": "f74d7ae3-65bd-4009-b86e-8064c051223f",
+            "containerId": "103d9ee1-5818-4bac-b495-5ed7c6e6ad3c",
+            "name": "Get report dates",
+            "url": "http://localhost:4000/api/administration/reports",
+            "method": "GET",
+            "sortNum": 180000,
+            "created": "2024-09-29T13:30:40.152Z",
+            "modified": "2024-09-29T16:09:45.814Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"start_date\": \"2024-09-01 00:00:00\",\n  \"end_date\": \"2024-10-30 00:00:00\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkYXZpZEBkYXZpZC5jb20iLCJuYW1lIjoiRGF2aWQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mjc2MjYxNzEsImV4cCI6MTcyNzYzMzM3MX0.LaiUMXWYZ0lqgdTUGRtfeBRkhG1uCFU2kD5OW3j-ATg"
+            }
+        }
+    ],
+    "ref": "5BUanORwLWIkpi3N8dDF0NUvGCtkoATE1LQQVbnDQ_ZNQX_G64_q0z5iY30mNt_qGu6O0huTCSYohUF8wPJK6A"
+}
