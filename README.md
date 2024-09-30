@@ -105,7 +105,7 @@ Used technology:
 <details>
 <summary>Authentication🔑</summary>
 
-- **Register user**   Registers a new user with email and password. This endpoint allows new users to create an account in the system.
+- **Register user** <br>Registers a new user with email and password. This endpoint allows new users to create an account in the system.<br>
 
           POST http://localhost:4000/api/auth/register
 
@@ -125,7 +125,7 @@ Used technology:
 
 <br>
 
-- **Login user**Logs in an existing user and returns an authentication token. This token is used for accessing protected endpoints.	
+- **Login user**  <br>Logs in an existing user and returns an authentication token. This token is used for accessing protected endpoints.<br>	
 
           POST http://localhost:4000/api/auth/login
 
@@ -141,7 +141,7 @@ Used technology:
 <details>
 <summary>Access</summary>
 
-- **Entry**
+- **Entry** <br>Records a user's entry into a specific room. This endpoint requires authentication and the room ID.<br>	
 
           POST http://localhost:4000/api/accesses/entry
 
@@ -161,7 +161,7 @@ Used technology:
 
 <br>
 
-- **Exit**
+- **Exit** <br>Records a user's exit from a specific room. This endpoint requires authentication and the room ID.<br>	
 
           POST http://localhost:4000/api/accesses/exit
 
@@ -181,7 +181,7 @@ Used technology:
 
 <br>
 
-- **Reserve**
+- **Reserve** <br>Allows a user to reserve a room for a specific date and time. This endpoint requires authentication, room ID, and entry datetime.<br>
 
           POST http://localhost:4000/api/accesses/reserve
 
@@ -202,7 +202,7 @@ Used technology:
 
 <br>
 
-- **Cancel reserve**
+- **Cancel reserve** <br>Cancels an existing reservation. This endpoint requires the reservation ID and authentication.<br>
 
           PUT http://localhost:4000/api/accesses/reservations/:id
 
@@ -214,7 +214,7 @@ Used technology:
 
 <br>
 
-- **Current occupants**
+- **Current occupants** <br>Retrieves the list of current occupants in a specific room. This endpoint requires the room ID and authentication.<br>
 
           GET http://localhost:4000/api/accesses/current/room/:id
 
@@ -227,7 +227,7 @@ Used technology:
 <details>
 <summary>Persons</summary>
 
-- **Current access**
+- **Current access** <br>Retrieves information about a specific person's current access. This endpoint requires the person's ID and authentication.<br>
 
           GET http://localhost:4000/api/persons/:id/current-access
 
@@ -239,7 +239,8 @@ Used technology:
 
 <br>
 
-- **Access history**
+- **Access history** <br>Retrieves the access history of a specific person. This endpoint requires the person's ID and authentication.<br>
+
 
           GET http://localhost:4000/api/persons/:id/access-history
 
@@ -253,7 +254,8 @@ Used technology:
 <details>
 <summary>Room</summary>
 
-- **Current access**
+- **Current access** <br>Retrieves the current status of a specific room, including current occupants. This endpoint requires the room ID and authentication.<br>
+
 
           GET http://localhost:4000/api/rooms/:id/current-status
 
@@ -266,7 +268,7 @@ Used technology:
 
 </details>
 <details>
-<summary>Access history</summary>
+<summary>Access history</summary> <br>Retrieves the access history for all rooms within a specific date range. This endpoint requires authentication and date parameters.<br>
 
 - **Access history**
 
@@ -288,7 +290,7 @@ Used technology:
     ```
 <br>
 
-- **Access history room**
+- **Access history room** <br>Retrieves the access history for a specific room within a date range. This endpoint requires the room ID, authentication, and date parameters.<br>
 
           GET http://localhost:4000/api/access_histories/room/:id
 
@@ -309,7 +311,7 @@ Used technology:
 
 </details>
 <details>
-<summary>Administration</summary>
+<summary>Administration</summary> <br>Generates a daily report of room usage. This endpoint is restricted to admin users and requires authentication.<br>
 
 - **Daily report** (IS ADMIN)
 
@@ -322,7 +324,7 @@ Used technology:
     ```
 <br>
 
-- **Report** (IS ADMIN)
+- **Report** (IS ADMIN) <br>Generates a custom report of room usage for a specific date range. This endpoint is restricted to admin users and requires authentication and date parameters.<br>
 
           GET http://localhost:4000/api/administration/reports
 
@@ -342,7 +344,7 @@ Used technology:
     ```
 <br>
 
-- **Room statistics** (IS ADMIN)
+- **Room statistics** (IS ADMIN) <br>Retrieves usage statistics for all rooms. This endpoint is restricted to admin users and requires authentication.<br>
 
           GET http://localhost:4000/api/administration/room-usage
 
