@@ -27,7 +27,16 @@ Welcome to my Naves Backend project, I hope you like it!☄️
 This project consists of transforming the management of a coworking space into a fluid and automated experience. Through an innovative application, the aim is to optimize access control, facilitating the real-time registration of user entries and exits. In addition, the tool will allow you to manage work room reservations and offer accurate administrative reports for more efficient decision making. All this, in an intuitive and easy-to-use environment, designed to modernize the administration of these collaborative spaces.
 
 ## Objetive🎯
-This project aims to develop an application for access control and management of a coworking space. The application allows recording and monitoring entry and exit of people, manage work rooms and generate administrative reports.
+Develop a comprehensive platform for managing access and room reservations that facilitates the efficient administration of spaces, guaranteeing a fluid experience for users.
+
+This system will allow users to register their accesses, make reservations, and consult their activity history, while administrators will be able to generate detailed reports and statistics on the use of the rooms. Through an intuitive interface and robust functionalities, it seeks to optimize the use of available resources, improve organization and provide a safe and accessible environment for all users.
+
+
+- **Efficiency:** Reduce the time and effort necessary to manage access and reservations.
+- **Transparency:** Provide a clear history of accesses and reservations for users and administrators.
+- **Data Analysis:** Allow administrators to make informed decisions based on usage statistics.
+- **Security:** Ensure that only authorized users have access to the rooms.
+
 <p align="center">
 <img width="215" alt="Captura de pantalla 2023-01-30 a las 20 20 38" src="img/Descripcion.png">
 </p>
@@ -92,10 +101,11 @@ Used technology:
 
 
 ## Endpoints🧩
+ Admin user: david@david.com
 <details>
 <summary>Authentication🔑</summary>
 
-- **Register user**
+- **Register user**   Registers a new user with email and password. This endpoint allows new users to create an account in the system.
 
           POST http://localhost:4000/api/auth/register
 
@@ -104,13 +114,18 @@ Used technology:
     ```js
         {
             "email": "david@david.com",
-            "password": "123456789"
+            "password": "123456789",
+            "name": "David",
+            "surnames": "Fernandez",
+            "dni": "123456789B",
+            "phone": "53227372",
+            "startup": "Juncos"
         }
     ```
 
 <br>
 
-- **Login user**	
+- **Login user**Logs in an existing user and returns an authentication token. This token is used for accessing protected endpoints.	
 
           POST http://localhost:4000/api/auth/login
 
@@ -124,33 +139,218 @@ Used technology:
     ```
 </details>
 <details>
-<summary>Persons</summary>
-
-
-
-</details>
-<details>
 <summary>Access</summary>
 
+- **Entry**
 
+          POST http://localhost:4000/api/accesses/entry
+
+    body:
+
+    ```js
+        {
+            "room_id": "5"
+        }
+    ```
+
+    auth:
+
+    ```js
+        auth token
+    ```
+
+<br>
+
+- **Exit**
+
+          POST http://localhost:4000/api/accesses/exit
+
+    body:
+
+    ```js
+        {
+            "room_id": "5"
+        }
+    ```
+
+    auth:
+
+    ```js
+        auth token
+    ```
+
+<br>
+
+- **Reserve**
+
+          POST http://localhost:4000/api/accesses/reserve
+
+    body:
+
+    ```js
+        {
+            "room_id": "5",
+            "entry_datetime": "2024-09-30 23:00:00"
+        }
+    ```
+
+    auth:
+
+    ```js
+        auth token
+    ```
+
+<br>
+
+- **Cancel reserve**
+
+          PUT http://localhost:4000/api/accesses/reservations/:id
+
+    auth:
+
+    ```js
+        auth token
+    ```
+
+<br>
+
+- **Current occupants**
+
+          GET http://localhost:4000/api/accesses/current/room/:id
+
+    auth:
+
+    ```js
+        auth token
+    ```
+</details>
+<details>
+<summary>Persons</summary>
+
+- **Current access**
+
+          GET http://localhost:4000/api/persons/:id/current-access
+
+    auth:
+
+    ```js
+        auth token
+    ```
+
+<br>
+
+- **Access history**
+
+          GET http://localhost:4000/api/persons/:id/access-history
+
+    auth:
+
+    ```js
+        auth token
+    ```
 
 </details>
 <details>
 <summary>Room</summary>
 
+- **Current access**
+
+          GET http://localhost:4000/api/rooms/:id/current-status
+
+    auth:
+
+    ```js
+        auth token
+    ```
 
 
 </details>
 <details>
 <summary>Access history</summary>
 
+- **Access history**
 
+          GET http://localhost:4000/api/access_histories
+
+    body:
+
+    ```js
+        {
+            "start_date": "2024-09-01",
+            "end_date": "2024-09-30"
+        }
+    ```
+
+    auth:
+
+    ```js
+        auth token
+    ```
+<br>
+
+- **Access history room**
+
+          GET http://localhost:4000/api/access_histories/room/:id
+
+    body:
+
+    ```js
+        {
+            "start_date": "2024-09-01",
+            "end_date": "2024-09-30"
+        }
+    ```
+
+    auth:
+
+    ```js
+        auth token
+    ```
 
 </details>
 <details>
 <summary>Administration</summary>
 
+- **Daily report** (IS ADMIN)
 
+          POST http://localhost:4000/api/administration/daily-report
+
+    auth:
+
+    ```js
+        auth token
+    ```
+<br>
+
+- **Report** (IS ADMIN)
+
+          GET http://localhost:4000/api/administration/reports
+
+    body:
+
+    ```js
+        {
+            "start_date": "2024-09-01 00:00:00",
+            "end_date": "2024-10-30 00:00:00"
+        }
+    ```
+
+    auth:
+
+    ```js
+        auth token
+    ```
+<br>
+
+- **Room statistics** (IS ADMIN)
+
+          GET http://localhost:4000/api/administration/room-usage
+
+    auth:
+
+    ```js
+        auth token
+    ```
 
 </details>
 
