@@ -139,7 +139,7 @@ Used technology:
     ```
 </details>
 <details>
-<summary>Access</summary>
+<summary>Access📅</summary>
 
 - **Entry** <br>Records a user's entry into a specific room. This endpoint requires authentication and the room ID.<br>	
 
@@ -225,7 +225,7 @@ Used technology:
     ```
 </details>
 <details>
-<summary>Persons</summary>
+<summary>Persons🧑🏻</summary>
 
 - **Current access** <br>Retrieves information about a specific person's current access. This endpoint requires the person's ID and authentication.<br>
 
@@ -252,7 +252,7 @@ Used technology:
 
 </details>
 <details>
-<summary>Room</summary>
+<summary>Room🏠</summary>
 
 - **Current access** <br>Retrieves the current status of a specific room, including current occupants. This endpoint requires the room ID and authentication.<br>
 
@@ -268,7 +268,7 @@ Used technology:
 
 </details>
 <details>
-<summary>Access history</summary> <br>Retrieves the access history for all rooms within a specific date range. This endpoint requires authentication and date parameters.<br>
+<summary>Access history📓</summary> <br>Retrieves the access history for all rooms within a specific date range. This endpoint requires authentication and date parameters.<br>
 
 - **Access history**
 
@@ -311,9 +311,9 @@ Used technology:
 
 </details>
 <details>
-<summary>Administration</summary> <br>Generates a daily report of room usage. This endpoint is restricted to admin users and requires authentication.<br>
+<summary>Administration📝</summary> 
 
-- **Daily report** (IS ADMIN)
+- **Daily report** (IS ADMIN) <br>Generates a daily report of room usage. This endpoint is restricted to admin users and requires authentication.<br>
 
           POST http://localhost:4000/api/administration/daily-report
 
