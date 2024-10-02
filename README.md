@@ -214,6 +214,18 @@ Used technology:
 
 <br>
 
+- **Get active reservation** <br>Retrieves the active reservation for the authenticated user. This endpoint requires authentication and returns the details of the users current reservation.<br>
+
+          GET http://localhost:4000/api/accesses/reservations/info
+
+    auth:
+
+    ```js
+        auth token
+    ```
+
+<br>
+
 - **Current occupants** <br>Retrieves the list of current occupants in a specific room. This endpoint requires the room ID and authentication.<br>
 
           GET http://localhost:4000/api/accesses/current/room/:id

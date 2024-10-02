@@ -345,27 +345,19 @@ export const getActiveReservation = async (req: Request, res: Response) => {
             }
         });
 
-        if (!activeReservation) {
-            return res.status(404).json({
-                success: true,
-                message: "No active reservation found",
-                data: null
-            });
-        }
-
         res.status(200).json({
             success: true,
-            data: activeReservation
+            data: activeReservation || null
         });
     } catch (error) {
-        console.error('Error al obtener la reserva activa:', error);
+        console.error('Error getting active reservation:', error);
         res.status(500).json({
             success: false,
-            message: "Error al obtener la reserva activa",
+            message: "Error getting active reservation",
             error: error
         });
     }
-};
+}
 
 
 
