@@ -333,6 +333,41 @@ export const cancelReservation = async (req: Request, res: Response) => {
     }
 }
 
+export const getActiveReservation = async (req: Request, res: Response) => {
+    try {
+        const userId = req.tokenData.id; 
+
+        const activeReservation = await access.findOne({
+            where: {
+                person_id: userId,
+                state: 'active',
+                entry_datetime: MoreThan(new Date()) 
+            }
+        });
+
+        if (!activeReservation) {
+            return res.status(404).json({
+                success: true,
+                message: "No active reservation found",
+                data: null
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: activeReservation
+        });
+    } catch (error) {
+        console.error('Error al obtener la reserva activa:', error);
+        res.status(500).json({
+            success: false,
+            message: "Error al obtener la reserva activa",
+            error: error
+        });
+    }
+};
+
+
 
 export const currentRoomOccupants = async (req: Request, res: Response) => {
     try {

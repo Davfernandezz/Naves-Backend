@@ -268,9 +268,9 @@ Used technology:
 
 </details>
 <details>
-<summary>Access history📓</summary> <br>Retrieves the access history for all rooms within a specific date range. This endpoint requires authentication and date parameters.<br>
+<summary>Access history📓</summary> 
 
-- **Access history**
+- **Access history** (IS ADMIN) <br>Retrieves the access history for all rooms within a specific date range. This endpoint requires authentication and date parameters.<br>
 
           GET http://localhost:4000/api/access_histories
 
@@ -290,7 +290,7 @@ Used technology:
     ```
 <br>
 
-- **Access history room** <br>Retrieves the access history for a specific room within a date range. This endpoint requires the room ID, authentication, and date parameters.<br>
+- **Access history room** (IS ADMIN)  <br>Retrieves the access history for a specific room within a date range. This endpoint requires the room ID, authentication, and date parameters.<br>
 
           GET http://localhost:4000/api/access_histories/room/:id
 
