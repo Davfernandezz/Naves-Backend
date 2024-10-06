@@ -200,7 +200,7 @@ export const getDateReport = async (req: Request, res: Response) => {
         if (!start_date || !end_date) {
             return res.status(400).json({
                 success: false,
-                message: "Both start_date and end_date are required"
+                message: "Start date and end date are required"
             });
         }
         const startDate = new Date(start_date as string);

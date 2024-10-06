@@ -35,8 +35,7 @@ export const accessSeeder = async () => {
             }
         }
 
-        // Crear accesos inactivos para el día de hoy
-        const todayInactiveCount = Math.floor(Math.random() * 15) + 10; // 10 a 24 accesos inactivos de hoy
+        const todayInactiveCount = Math.floor(Math.random() * 15) + 10; 
         for (let i = 0; i < todayInactiveCount; i++) {
             const userId = Math.floor(Math.random() * 37) + 1;
             if (!activeUsers.has(userId) && !todayInactiveUsers.has(userId)) {
@@ -44,9 +43,9 @@ export const accessSeeder = async () => {
                 accessInstance.person_id = userId;
                 accessInstance.room_id = Math.floor(Math.random() * 6) + 1;
                 accessInstance.state = "inactive";
-                const entryTime = new Date(currentDate.getTime() - Math.random() * 7200000); // Hasta 2 horas atrás
+                const entryTime = new Date(currentDate.getTime() - Math.random() * 7200000);
                 accessInstance.entry_datetime = entryTime;
-                accessInstance.exit_datetime = new Date(entryTime.getTime() + 3600000 + Math.random() * 3600000); // 1-2 horas después
+                accessInstance.exit_datetime = new Date(entryTime.getTime() + 3600000 + Math.random() * 3600000); 
                 await accessInstance.save();
                 todayInactiveUsers.add(userId);
                 accessCount++;
@@ -90,7 +89,7 @@ export const accessSeeder = async () => {
             }
 
             if (accessInstance.state === "inactive" && !todayInactiveUsers.has(i)) {
-                const entryDate = getRandomDate(pastDate, new Date(currentDate.getTime() - 86400000)); // Hasta ayer
+                const entryDate = getRandomDate(pastDate, new Date(currentDate.getTime() - 86400000));
                 accessInstance.entry_datetime = entryDate;
                 accessInstance.exit_datetime = new Date(entryDate.getTime() + 60 * 60 * 1000); 
             } else if (accessInstance.state === "active" && !accessInstance.entry_datetime) {
