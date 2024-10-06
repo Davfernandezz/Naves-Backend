@@ -3,21 +3,20 @@ import { Request, Response } from 'express';
 import { Between, IsNull, Not } from "typeorm";
 import { administration } from "./administration";
 import { access } from "../access/access";
-import { person } from '../person/person';
 import { room } from '../room/room';
 
 
 export const generateDailyReport = async (req: Request, res: Response) => {
     try {
-        const today = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Madrid"}));
-        today.setHours(0, 0, 0, 0);
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
+        const now = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Madrid"}));
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        startOfMonth.setHours(0, 0, 0, 0);
+        const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
 
-        // 1. Obtener los accesos del día con detalles
+        // 1. Obtener los accesos desde el inicio del mes hasta hoy con detalles
         const accesses = await access.find({
             where: {
-                entry_datetime: Between(today, tomorrow),
+                entry_datetime: Between(startOfMonth, endOfToday),
                 exit_datetime: Not(IsNull()),
             },
             relations: ['person', 'room']
@@ -28,7 +27,7 @@ export const generateDailyReport = async (req: Request, res: Response) => {
         // 2. Obtener las ausencias (reservas canceladas) con detalles
         const absences = await access.find({
             where: {
-                entry_datetime: Between(today, tomorrow),
+                entry_datetime: Between(startOfMonth, endOfToday),
                 state: 'cancelled'
             },
             relations: ['person', 'room']
@@ -36,14 +35,15 @@ export const generateDailyReport = async (req: Request, res: Response) => {
 
         const totalAbsences = absences.length;
 
-        // 3. Obtener todos los usuarios con actividad en el día
+        // 3. Obtener todos los usuarios con actividad completada en el período
         const allActiveUsers = await access.createQueryBuilder("access")
             .select("access.person_id", "userId")
             .addSelect("COUNT(*)", "accessCount")
             .addSelect("person.name", "name")
             .addSelect("person.surnames", "surnames")
             .innerJoin("access.person", "person")
-            .where("access.entry_datetime BETWEEN :start AND :end", { start: today, end: tomorrow })
+            .where("access.entry_datetime BETWEEN :start AND :end", { start: startOfMonth, end: endOfToday })
+            .andWhere("access.exit_datetime IS NOT NULL")
             .groupBy("access.person_id")
             .addGroupBy("person.name")
             .addGroupBy("person.surnames")
@@ -51,12 +51,15 @@ export const generateDailyReport = async (req: Request, res: Response) => {
             .getRawMany();
 
         // 4. Separar usuarios frecuentes e infrecuentes
-        const frequentUsers = allActiveUsers.filter(user => parseInt(user.accessCount) > 1);
-        const infrequentUsers = allActiveUsers.filter(user => parseInt(user.accessCount) <= 1);
+        const frequentUsers = allActiveUsers.filter(user => parseInt(user.accessCount) > 3);
+        const infrequentUsers = allActiveUsers.filter(user => parseInt(user.accessCount) <= 3);
 
         // 5. Preparar datos detallados para la respuesta
         const detailedReport = {
-            report_date: today,
+            report_period: {
+                start_date: startOfMonth,
+                end_date: endOfToday
+            },
             total_accesses: totalAccesses,
             total_absences: totalAbsences,
             accesses: accesses.map(a => ({
@@ -82,7 +85,7 @@ export const generateDailyReport = async (req: Request, res: Response) => {
 
         // 6. Guardar el informe en la base de datos
         const newReport = new administration();
-        newReport.report_date = today;
+        newReport.report_date = now;
         newReport.total_accesses = totalAccesses;
         newReport.total_absences = totalAbsences;
         newReport.frequent_users = JSON.stringify(detailedReport.frequent_users);
@@ -104,7 +107,7 @@ export const generateDailyReport = async (req: Request, res: Response) => {
             error: error 
         });
     }
-};
+}
 
 export const getRoomUsageStats = async (req: Request, res: Response) => {
     try {
@@ -192,17 +195,16 @@ export const getRoomUsageStats = async (req: Request, res: Response) => {
 
 export const getDateReport = async (req: Request, res: Response) => {
     try {
-        const { start_date, end_date } = req.body;
+        const { start_date, end_date } = req.query;
 
         if (!start_date || !end_date) {
             return res.status(400).json({
                 success: false,
-                message: "Both start_date and end_date are required in the request body"
+                message: "Both start_date and end_date are required"
             });
         }
-
-        const startDate = new Date(start_date);
-        const endDate = new Date(end_date);
+        const startDate = new Date(start_date as string);
+        const endDate = new Date(end_date as string);
         endDate.setHours(23, 59, 59, 999);
 
         if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
@@ -234,7 +236,7 @@ export const getDateReport = async (req: Request, res: Response) => {
 
         const totalAbsences = absences.length;
 
-        // 3. Obtener todos los usuarios con actividad en el período
+        // 3. Obtener todos los usuarios con actividad completada en el período
         const allActiveUsers = await access.createQueryBuilder("access")
             .select("access.person_id", "userId")
             .addSelect("COUNT(*)", "accessCount")
@@ -242,6 +244,7 @@ export const getDateReport = async (req: Request, res: Response) => {
             .addSelect("person.surnames", "surnames")
             .innerJoin("access.person", "person")
             .where("access.entry_datetime BETWEEN :start AND :end", { start: startDate, end: endDate })
+            .andWhere("access.exit_datetime IS NOT NULL")
             .groupBy("access.person_id")
             .addGroupBy("person.name")
             .addGroupBy("person.surnames")
@@ -249,9 +252,8 @@ export const getDateReport = async (req: Request, res: Response) => {
             .getRawMany();
 
         // 4. Separar usuarios frecuentes e infrecuentes
-        const averageAccesses = allActiveUsers.reduce((sum, user) => sum + parseInt(user.accessCount), 0) / allActiveUsers.length;
-        const frequentUsers = allActiveUsers.filter(user => parseInt(user.accessCount) > averageAccesses);
-        const infrequentUsers = allActiveUsers.filter(user => parseInt(user.accessCount) <= averageAccesses);
+        const frequentUsers = allActiveUsers.filter(user => parseInt(user.accessCount) > 3);
+        const infrequentUsers = allActiveUsers.filter(user => parseInt(user.accessCount) <= 3);
 
         // 5. Preparar datos detallados para la respuesta
         const detailedReport = {
@@ -306,4 +308,4 @@ export const getDateReport = async (req: Request, res: Response) => {
             error: error
         });
     }
-};
+}
