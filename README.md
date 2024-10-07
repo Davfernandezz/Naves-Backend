@@ -89,7 +89,7 @@ Used technology:
 
     - Access - Access_History: Each access generates a record in the access history access. One to one relationship.
 
-## Local installation🧾
+## Local installation Backend🧾
 1. Install docker and create a mysql container
 1. Clone the repository
 2.  ``` $ npm install  ```
@@ -99,6 +99,11 @@ Used technology:
 6. ``` $ We run the seeders $ npm run db:seed ``` 
 7. ...
 
+### Local installation Frontend📊
+
+1. Clone the repository
+2. ``` $ npm install  ```
+3. ``` $ npm run dev ```
 
 ## Endpoints🧩
  Admin user: david@david.com
