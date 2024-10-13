@@ -116,28 +116,39 @@ export const getRoomUsageStats = async (req: Request, res: Response) => {
         const startDate = new Date(now.getFullYear(), now.getMonth(), 1);
         const endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
 
-        // 2. Obtener todos los accesos desde el inicio del mes hasta hoy
+        // 2. Obtener todos los accesos desde el inicio del mes hasta hoy, que tengan exit_datetime 
         const accesses = await access.find({
             where: {
-                entry_datetime: Between(startDate, endDate)
+                entry_datetime: Between(startDate, endDate),
+                exit_datetime: Not(IsNull()) 
             },
             relations: ['room']
         });
 
-        // 3. Obtener todas las salas
+        // 3. Obtener accesos cancelados por separado
+        const cancelledAccesses = await access.find({
+            where: {
+                entry_datetime: Between(startDate, endDate),
+                state: 'cancelled'
+            },
+            relations: ['room']
+        });
+
+        // 4. Obtener todas las salas
         const rooms = await room.find();
 
-        // 4. Calcular el número de días transcurridos en el mes
+        // 5. Calcular el número de días transcurridos en el mes
         const daysInPeriod = now.getDate();
 
-        // 5. Calcular estadísticas para cada sala
+        // 6. Calcular estadísticas para cada sala
         const roomStats = rooms.map(room => {
-            const roomAccesses = accesses.filter(a => a.room.id === room.id);
-            const completedAccesses = roomAccesses.filter(a => a.exit_datetime !== null);
-            const cancelledAccesses = roomAccesses.filter(a => a.state === 'cancelled');
-            const totalAccesses = roomAccesses.length - cancelledAccesses.length;
+            const roomAccesses = accesses.filter(a => a.room.id === room.id); 
+            const roomCancelledAccesses = cancelledAccesses.filter(a => a.room.id === room.id);
+            
+            const completedAccesses = roomAccesses;  
+            const cancelledAccessCount = roomCancelledAccesses.length;
+            const totalAccesses = roomAccesses.length; 
 
-            // Calcular horas totales de uso y duración promedio solo para accesos completados
             let totalHours = 0;
             let totalDuration = 0;
 
@@ -154,30 +165,30 @@ export const getRoomUsageStats = async (req: Request, res: Response) => {
             return {
                 room_id: room.id,
                 room_name: room.room_name,
-                total_accesses: totalAccesses,
+                total_accesses: totalAccesses,  
                 completed_accesses: completedAccesses.length,
-                cancelled_accesses: cancelledAccesses.length,
+                cancelled_accesses: cancelledAccessCount,
                 total_hours_used: parseFloat(totalHours.toFixed(2)),
                 average_duration: parseFloat(averageDuration.toFixed(2))
             };
         });
 
-        // 6. Calcular estadísticas globales
+        // 7. Calcular estadísticas globales
         const totalAccesses = roomStats.reduce((sum, stat) => sum + stat.total_accesses, 0);
         const totalCancellations = roomStats.reduce((sum, stat) => sum + stat.cancelled_accesses, 0);
         const totalHoursUsed = roomStats.reduce((sum, stat) => sum + stat.total_hours_used, 0);
 
-        // 7. Preparar la respuesta
+        // 8. Preparar la respuesta
         const response = {
             period: `${startDate.toLocaleDateString()} to ${endDate.toLocaleDateString()}`,
             days_in_period: daysInPeriod,
-            total_accesses: totalAccesses,
+            total_accesses: totalAccesses, 
             total_cancellations: totalCancellations,
             total_hours_used: parseFloat(totalHoursUsed.toFixed(2)),
             room_stats: roomStats
         };
 
-        // 8. Enviar la respuesta
+        // 9. Enviar la respuesta
         res.status(200).json({
             success: true,
             message: "Room usage statistics from the beginning of the month to today retrieved successfully",
